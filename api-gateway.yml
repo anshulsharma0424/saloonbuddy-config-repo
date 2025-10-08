@@ -2,41 +2,30 @@ server:
   port: 8080
 
 spring:
-  # This section configures the Gateway to act as a Resource Server
   security:
     oauth2:
       resourceserver:
         jwt:
-          # It will use this URL to get public keys from our auth-service to validate JWTs
           issuer-uri: http://localhost:9000
-          
   cloud:
     gateway:
       routes:
-        # Route to our auth-service (for login, register, etc.)
         - id: auth-service-route
           uri: lb://auth-service
           predicates:
             - Path=/auth/**, /register, /login, /.well-known/**
-
-        # We will add routes for our other services here as we build them
         - id: user-service-route
           uri: lb://user-service
           predicates:
             - Path=/api/users/**
-        
         - id: salon-service-route
           uri: lb://salon-service
           predicates:
             - Path=/api/salons/**
-            
-        # Add more routes as needed...
-
-      # Global CORS configuration to allow our React frontend to communicate with the gateway
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:5173" # The default port for Vite React apps
+            allowedOrigins: "http://localhost:5173"
             allowedMethods:
               - GET
               - POST
