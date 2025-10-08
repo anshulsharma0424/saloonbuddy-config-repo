@@ -2,26 +2,45 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: api-gateway
+  # This configures the Gateway to validate JWTs from our custom auth-service
   security:
     oauth2:
       resourceserver:
         jwt:
+          # The URL of our auth-service. The gateway will use this to get the public
+          # keys needed to verify the signature of any incoming JWT.
           issuer-uri: http://localhost:9000
+          
   cloud:
     gateway:
       routes:
-        - id: auth-service-route
+        # A public route for user registration
+        - id: register-route
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**, /register, /login, /.well-known/**
+            - Path=/register
+            - Method=POST
+        
+        # Public OAuth2 endpoints needed for the login flow
+        - id: auth-server-oauth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/oauth2/**
+
+        # We will add protected routes for our other services here
         - id: user-service-route
           uri: lb://user-service
           predicates:
             - Path=/api/users/**
+        
         - id: salon-service-route
           uri: lb://salon-service
           predicates:
             - Path=/api/salons/**
+
+      # Global CORS configuration to allow our React frontend
       globalcors:
         cors-configurations:
           '[/**]':
