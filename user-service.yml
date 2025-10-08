@@ -1,0 +1,24 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/saloonbuddy_user_db
+    username: root
+    password: root # Use the password from your docker-compose.yml
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # This tells the service how to validate JWTs by checking with our auth-service
+          issuer-uri: http://localhost:9000
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
