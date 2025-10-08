@@ -12,13 +12,13 @@ spring:
   cloud:
     gateway:
       routes:
-        # Combined route for public auth-service endpoints
+        # --- AUTHENTICATION ---
         - id: auth-service-public-route
           uri: lb://auth-service
           predicates:
             - Path=/register, /login, /oauth2/**, /.well-known/**
         
-        # Protected API Routes
+        # --- PROTECTED API ROUTES ---
         - id: user-service-route
           uri: lb://user-service
           predicates:
@@ -39,11 +39,17 @@ spring:
           predicates:
             - Path=/api/service-offerings/**
 
+        - id: booking-service-route # <-- Added missing route
+          uri: lb://booking-service
+          predicates:
+            - Path=/api/bookings/**
+            
         - id: payment-service-route
           uri: lb://payment-service
           predicates:
             - Path=/api/payments/**
 
+      # --- GLOBAL CORS CONFIGURATION ---
       globalcors:
         cors-configurations:
           '[/**]':
