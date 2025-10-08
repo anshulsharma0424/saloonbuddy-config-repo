@@ -1,0 +1,20 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/saloonbuddy_auth_db
+    username: root
+    password: root # Use the password from your docker-compose.yml
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+# This is the issuer URI our other services will use to validate tokens.
+# It should match the address of our auth-service.
+auth:
+  issuer-uri: http://localhost:9000
