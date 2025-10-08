@@ -40,6 +40,17 @@ spring:
           predicates:
             - Path=/api/salons/**
 
+        # ... existing routes ...
+        - id: offering-service-categories-route
+          uri: lb://offering-service
+          predicates:
+            - Path=/api/categories/**
+
+        - id: offering-service-offerings-route
+          uri: lb://offering-service
+          predicates:
+            - Path=/api/service-offerings/**
+
       # Global CORS configuration to allow our React frontend
       globalcors:
         cors-configurations:
