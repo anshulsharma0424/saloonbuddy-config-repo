@@ -11,45 +11,7 @@ spring:
           issuer-uri: http://localhost:9000
   cloud:
     gateway:
-      routes:
-        # --- AUTHENTICATION ---
-        - id: auth-service-public-route
-          uri: lb://auth-service
-          predicates:
-            - Path=/register, /login, /oauth2/**, /.well-known/**
-        
-        # --- PROTECTED API ROUTES ---
-        - id: user-service-route
-          uri: lb://user-service
-          predicates:
-            - Path=/api/users/**
-        
-        - id: salon-service-route
-          uri: lb://salon-service
-          predicates:
-            - Path=/api/salons/**
-            
-        - id: offering-service-categories-route
-          uri: lb://offering-service
-          predicates:
-            - Path=/api/categories/**
-
-        - id: offering-service-offerings-route
-          uri: lb://offering-service
-          predicates:
-            - Path=/api/service-offerings/**
-
-        - id: booking-service-route # <-- Added missing route
-          uri: lb://booking-service
-          predicates:
-            - Path=/api/bookings/**
-            
-        - id: payment-service-route
-          uri: lb://payment-service
-          predicates:
-            - Path=/api/payments/**
-
-      # --- GLOBAL CORS CONFIGURATION ---
+      # This is the correct location for the global CORS configuration
       globalcors:
         cors-configurations:
           '[/**]':
@@ -61,3 +23,30 @@ spring:
               - DELETE
               - OPTIONS
             allowedHeaders: "*"
+      
+      # All your routes go below
+      routes:
+        - id: auth-service-public-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/register, /login, /oauth2/**, /.well-known/**
+        
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+        
+        - id: salon-service-route
+          uri: lb://salon-service
+          predicates:
+            - Path=/api/salons/**
+
+        - id: offering-service-categories-route
+          uri: lb://offering-service
+          predicates:
+            - Path=/api/categories/**
+
+        - id: offering-service-offerings-route
+          uri: lb://offering-service
+          predicates:
+            - Path=/api/service-offerings/**
