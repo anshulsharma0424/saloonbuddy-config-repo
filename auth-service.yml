@@ -4,20 +4,24 @@ server:
 spring:
   application:
     name: auth-service
+  
   datasource:
-    url: jdbc:mysql://localhost:3306/saloonbuddy_auth_db
+    url: jdbc:mysql://localhost:3306/saloonbuddy_auth_newdb
     username: root
     password: root # Make sure this matches your docker-compose password
     driver-class-name: com.mysql.cj.jdbc.Driver
+  
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+  
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+  
   security:
     oauth2:
       client:
